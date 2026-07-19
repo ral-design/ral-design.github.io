@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Андрей — художник · декоративные покрытия</title>
+  <meta
+    name="description"
+    content="Портфолио художника Андрея: авторская живопись и декоративные покрытия стен."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <header class="site-header" id="top">
+    <nav class="nav container">
+      <a class="brand" href="#top">Андрей</a>
+      <div class="nav-links">
+        <a href="#gallery">Работы</a>
+        <a href="#about">Обо мне</a>
+        <a href="#contact">Контакты</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-inner">
+      <p class="hero-eyebrow">Художник · декоративные покрытия</p>
+      <h1 class="hero-title">Искусство,<br />которое живёт на стенах</h1>
+      <p class="hero-lead">
+        Авторская живопись и декоративная отделка интерьеров — от эскиза
+        до готовой поверхности. Каждая работа создаётся вручную.
+      </p>
+      <a class="btn" href="#gallery">Смотреть работы</a>
+    </div>
+  </section>
+
+  <main>
+    <section class="gallery-section" id="gallery">
+      <div class="container">
+        <div class="section-head">
+          <h2>Портфолио</h2>
+          <p>Живопись и декоративные покрытия</p>
+        </div>
+
+        <div class="filters" id="filters">
+          <button class="filter is-active" data-filter="all">Все</button>
+          <button class="filter" data-filter="art">Арт</button>
+          <button class="filter" data-filter="decor">Декоративка</button>
+        </div>
+
+        <div class="grid" id="grid"><!-- заполняется из assets/js/main.js --></div>
+      </div>
+    </section>
+
+    <section class="about" id="about">
+      <div class="container about-inner">
+        <div class="about-text">
+          <h2>Обо мне</h2>
+          <p>
+            Меня зовут Андрей. Я занимаюсь живописью и декоративными
+            покрытиями: расписываю стены, создаю фактурные и художественные
+            поверхности, работаю с современными и классическими техниками.
+          </p>
+          <p>
+            В портфолио — авторские арт-работы и реализованные проекты
+            декоративной отделки. Открыт к заказам и совместным проектам.
+          </p>
+        </div>
+        <ul class="about-stats">
+          <li><span class="num" id="stat-art">—</span> арт-работ</li>
+          <li><span class="num" id="stat-decor">—</span> декор-проектов</li>
+          <li><span class="num">100%</span> ручная работа</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="container contact-inner">
+        <h2>Контакты</h2>
+        <p>Обсудим ваш проект — напишите удобным способом.</p>
+        <div class="contact-links">
+          <a href="https://t.me/" target="_blank" rel="noopener">Telegram</a>
+          <a href="https://wa.me/" target="_blank" rel="noopener">WhatsApp</a>
+          <a href="mailto:hello@example.com">Email</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>© <span id="year"></span> Андрей — художник</span>
+    </div>
+  </footer>
+
+  <!-- Лайтбокс -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lb-btn lb-close" id="lb-close" aria-label="Закрыть">&times;</button>
+    <button class="lb-btn lb-prev" id="lb-prev" aria-label="Назад">&#8249;</button>
+    <button class="lb-btn lb-next" id="lb-next" aria-label="Вперёд">&#8250;</button>
+    <div class="lb-stage" id="lb-stage"></div>
+  </div>
+
+  <script src="data/manifest.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
