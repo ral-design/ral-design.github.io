@@ -1,3 +1,4 @@
+import { Link, useLocation } from 'react-router-dom'
 import { categoryTitle } from '../i18n'
 import { useApp } from '../context/AppContext'
 import type { Category } from '../types'
@@ -18,10 +19,24 @@ export function CategoryFilters({
   onGallery,
 }: Props) {
   const { lang, ui } = useApp()
+  const { pathname } = useLocation()
   const visible = categories.filter((c) => c.count > 0)
 
   return (
     <nav className="category-filters" aria-label={ui.projects}>
+      <Link
+        to="/about"
+        className={`filter-pill filter-pill--artist ${pathname === '/about' ? 'is-active' : ''}`}
+      >
+        {ui.artistPage}
+      </Link>
+      <button
+        type="button"
+        className="filter-pill filter-pill--gallery"
+        onClick={onGallery}
+      >
+        {ui.gallery}
+      </button>
       <button
         type="button"
         className={`filter-pill ${active === 'all' ? 'is-active' : ''}`}
@@ -40,13 +55,6 @@ export function CategoryFilters({
           <span className="filter-pill__count">{cat.count}</span>
         </button>
       ))}
-      <button
-        type="button"
-        className="filter-pill filter-pill--gallery"
-        onClick={onGallery}
-      >
-        {ui.gallery}
-      </button>
     </nav>
   )
 }

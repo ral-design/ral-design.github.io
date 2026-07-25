@@ -6,9 +6,11 @@ export function Header() {
 
   return (
     <header className="site-header">
-      <button type="button" className="header-lang" onClick={toggleLang}>
-        {ui.langSwitch}
-      </button>
+      <div className="header-left">
+        <button type="button" className="header-lang" onClick={toggleLang}>
+          {ui.langSwitch}
+        </button>
+      </div>
 
       <Logo />
 
