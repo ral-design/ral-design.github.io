@@ -609,7 +609,7 @@ video {
   width: auto;
   object-fit: contain;
   pointer-events: auto;
-  opacity: 0.45;
+  opacity: 0.2;
   filter: grayscale(1) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.18));
   transition: opacity 0.35s ease, filter 0.35s ease;
   cursor: default;
