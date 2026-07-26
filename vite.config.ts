@@ -1,4 +1,4 @@
-import { copyFileSync, existsSync } from 'node:fs'
+import { execFileSync } from 'node:child_process'
 import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -7,13 +7,11 @@ export default defineConfig({
   plugins: [
     react(),
     {
-      name: 'spa-github-pages',
+      name: 'spa-github-pages-meta',
       closeBundle() {
-        const dist = resolve(__dirname, 'dist')
-        const index = resolve(dist, 'index.html')
-        if (existsSync(index)) {
-          copyFileSync(index, resolve(dist, '404.html'))
-        }
+        execFileSync(process.execPath, [resolve(__dirname, 'scripts/prerender-meta.mjs')], {
+          stdio: 'inherit',
+        })
       },
     },
   ],

@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "build:assets": "node scripts/build-assets.mjs",
     "rebuild:thumbs": "node scripts/rebuild-thumbs.mjs",
+    "prerender:meta": "node scripts/prerender-meta.mjs",
     "lint": "oxlint",
     "preview": "vite preview"
   },
