@@ -147,14 +147,12 @@ video {
 
 .page {
   position: relative;
-  z-index: 1;
   min-height: 100vh;
   padding-bottom: 120px;
 }
 
 .page-loading {
   position: relative;
-  z-index: 1;
   min-height: 100vh;
   display: grid;
   place-items: center;
@@ -195,6 +193,8 @@ video {
 }
 
 .about-page__main {
+  position: relative;
+  z-index: 2;
   max-width: 720px;
   margin: 0 auto;
   padding: 40px 28px 24px;
@@ -251,6 +251,8 @@ video {
 
 /* Filters */
 .category-filters {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -311,6 +313,8 @@ video {
 /* Project grid — flush mosaic, equal card heights */
 .project-grid {
   --cols: 1;
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: repeat(var(--cols), 1fr);
   gap: var(--gap);
@@ -538,6 +542,8 @@ video {
 }
 
 .social-bar {
+  position: relative;
+  z-index: 2;
   display: flex;
   justify-content: center;
   padding: 48px 28px 100px;
@@ -589,7 +595,7 @@ video {
   position: absolute;
   left: 4%;
   bottom: -5px;
-  z-index: 0;
+  z-index: 1;
   display: flex;
   align-items: flex-end;
   gap: 2px;
@@ -602,7 +608,16 @@ video {
   height: clamp(72px, 14vw, 128px);
   width: auto;
   object-fit: contain;
-  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.18));
+  pointer-events: auto;
+  opacity: 0.45;
+  filter: grayscale(1) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.18));
+  transition: opacity 0.35s ease, filter 0.35s ease;
+  cursor: default;
+}
+
+.corner-figures__item:hover {
+  opacity: 1;
+  filter: grayscale(0) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.18));
 }
 
 /* Contact FAB */
@@ -825,6 +840,8 @@ video {
 
 /* Project detail */
 .project-detail {
+  position: relative;
+  z-index: 2;
   max-width: 920px;
   margin: 0 auto;
   padding: 24px 24px 40px;
