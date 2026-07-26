@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AppProvider } from './context/AppContext'
+import { CornerFigures } from './components/CornerFigures'
 import { ScrollToTop } from './components/ScrollToTop'
 import { AboutPage } from './pages/AboutPage'
 import { HomePage } from './pages/HomePage'
@@ -12,13 +13,16 @@ export default function App() {
   return (
     <AppProvider>
       <BrowserRouter basename={basename || undefined}>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/project/:slug" element={<ProjectPage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        <div className="app-shell">
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/project/:slug" element={<ProjectPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+          <CornerFigures />
+        </div>
       </BrowserRouter>
     </AppProvider>
   )

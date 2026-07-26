@@ -140,12 +140,21 @@ video {
   border: 0;
 }
 
+.app-shell {
+  position: relative;
+  min-height: 100vh;
+}
+
 .page {
+  position: relative;
+  z-index: 1;
   min-height: 100vh;
   padding-bottom: 120px;
 }
 
 .page-loading {
+  position: relative;
+  z-index: 1;
   min-height: 100vh;
   display: grid;
   place-items: center;
@@ -573,6 +582,27 @@ video {
 .social-icon--vk,
 .social-icon--instagram {
   background: transparent;
+}
+
+/* Decorative cardboard figures — bottom-left on all pages */
+.corner-figures {
+  position: absolute;
+  left: 4%;
+  bottom: -5px;
+  z-index: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.corner-figures__item {
+  display: block;
+  height: clamp(72px, 14vw, 128px);
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.18));
 }
 
 /* Contact FAB */
@@ -1132,5 +1162,13 @@ video {
   .contact-fab {
     right: 16px;
     bottom: 18px;
+  }
+
+  .corner-figures {
+    gap: 0;
+  }
+
+  .corner-figures__item {
+    height: clamp(56px, 16vw, 88px);
   }
 }
