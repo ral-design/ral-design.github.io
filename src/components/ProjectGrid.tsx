@@ -17,7 +17,7 @@ export function ProjectGrid({ projects }: Props) {
           key={project.slug}
           project={project}
           size={sizes[index] ?? 'normal'}
-          priority={index < 4}
+          priority={index < 2}
         />
       ))}
     </section>

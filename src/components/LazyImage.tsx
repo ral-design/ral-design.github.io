@@ -24,6 +24,11 @@ function toUrl(path?: string | null) {
   return path ? assetUrl(path) : ''
 }
 
+/** Convention: foo.jpg → foo.blur.webp (tiny LQIP next to the image). */
+function blurPathFor(displayPath: string) {
+  return displayPath.replace(/\.(jpe?g|png|webp)$/i, '.blur.webp')
+}
+
 export function LazyImage({
   src,
   webp,
@@ -35,25 +40,41 @@ export function LazyImage({
   sizes,
 }: Props) {
   const { ref, inView } = useInView<HTMLDivElement>({
-    rootMargin: priority ? '0px' : '400px 0px',
+    rootMargin: priority ? '0px' : '200px 0px',
   })
   const [loaded, setLoaded] = useState(false)
+  const [blurOk, setBlurOk] = useState(true)
   const active = priority || inView
 
   const displayJpg = thumb || src
   const displayWebp = thumbWebp || webp
   const fullJpg = toUrl(displayJpg)
   const fullWebp = toUrl(displayWebp)
+  const blurUrl = toUrl(blurPathFor(displayJpg))
 
   return (
     <div
       ref={ref}
       className={`lazy-image ${loaded ? 'is-loaded' : ''} ${className}`}
     >
+      {blurUrl && blurOk ? (
+        <img
+          className="lazy-image__blur"
+          src={blurUrl}
+          alt=""
+          aria-hidden
+          decoding="async"
+          loading="eager"
+          onError={() => setBlurOk(false)}
+        />
+      ) : (
+        <div className="lazy-image__skeleton" aria-hidden />
+      )}
       {active ? (
         <picture>
           {fullWebp ? <source srcSet={fullWebp} type="image/webp" /> : null}
           <img
+            className="lazy-image__main"
             src={fullJpg}
             alt={alt}
             loading={priority ? 'eager' : 'lazy'}
@@ -63,9 +84,7 @@ export function LazyImage({
             onLoad={() => setLoaded(true)}
           />
         </picture>
-      ) : (
-        <div className="lazy-image__skeleton" aria-hidden />
-      )}
+      ) : null}
     </div>
   )
 }

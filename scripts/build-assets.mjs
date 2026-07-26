@@ -23,11 +23,15 @@ const OUT_IMG = path.join(ROOT, 'public', 'images', 'projects')
 const OUT_DATA = path.join(ROOT, 'public', 'data', 'projects.json')
 
 const FULL_MAX = 1920
-const THUMB_MAX = 800
+const THUMB_MAX = 960
+const BLUR_MAX = 32
 const MAX_IMAGES_PER_PROJECT = 40
 const MAX_VIDEOS_PER_PROJECT = 8
 const JPEG_QUALITY = 92
+const THUMB_JPEG_QUALITY = 90
 const WEBP_QUALITY = 90
+const THUMB_WEBP_QUALITY = 88
+const BLUR_WEBP_QUALITY = 40
 const VIDEO_CRF = 18
 const VIDEO_MAX_W = 1920
 const VIDEO_AUDIO_BITRATE = '160k'
@@ -110,7 +114,7 @@ function run(bin, args, label = '') {
   return true
 }
 
-function resizeJpeg(src, dest, maxEdge) {
+function resizeJpeg(src, dest, maxEdge, quality = JPEG_QUALITY) {
   ensureDir(path.dirname(dest))
   const tmp = `${dest}.tmp.jpg`
   try {
@@ -118,7 +122,7 @@ function resizeJpeg(src, dest, maxEdge) {
       SIPS,
       [
         '-s', 'format', 'jpeg',
-        '-s', 'formatOptions', String(JPEG_QUALITY),
+        '-s', 'formatOptions', String(quality),
         '-Z', String(maxEdge),
         src,
         '--out', tmp,
@@ -137,14 +141,27 @@ function resizeJpeg(src, dest, maxEdge) {
   }
 }
 
-function toWebp(srcJpg, destWebp) {
+function toWebp(srcJpg, destWebp, quality = WEBP_QUALITY) {
   if (!hasBin(CWEBP)) return false
   ensureDir(path.dirname(destWebp))
   return run(
     CWEBP,
-    ['-q', String(WEBP_QUALITY), '-m', '6', '-af', '-metadata', 'all', srcJpg, '-o', destWebp],
+    ['-q', String(quality), '-m', '6', '-af', '-metadata', 'all', srcJpg, '-o', destWebp],
     'cwebp',
   )
+}
+
+function makeBlur(srcJpg, destBlurWebp) {
+  if (!hasBin(CWEBP)) return false
+  const tmp = `${destBlurWebp}.tmp.jpg`
+  if (!resizeJpeg(srcJpg, tmp, BLUR_MAX, 60)) return false
+  const ok = toWebp(tmp, destBlurWebp, BLUR_WEBP_QUALITY)
+  try {
+    fs.unlinkSync(tmp)
+  } catch {
+    /* ignore */
+  }
+  return ok
 }
 
 function processProjectImages(slug, sourcePaths) {
@@ -161,18 +178,28 @@ function processProjectImages(slug, sourcePaths) {
     const fullWebpRel = `images/projects/${slug}/${base}.webp`
     const thumbJpgRel = `images/projects/${slug}/thumbs/${base}.jpg`
     const thumbWebpRel = `images/projects/${slug}/thumbs/${base}.webp`
+    const blurWebpRel = `images/projects/${slug}/thumbs/${base}.blur.webp`
 
     const fullJpg = path.join(ROOT, 'public', fullJpgRel)
     const fullWebp = path.join(ROOT, 'public', fullWebpRel)
     const thumbJpg = path.join(ROOT, 'public', thumbJpgRel)
     const thumbWebp = path.join(ROOT, 'public', thumbWebpRel)
+    const blurWebp = path.join(ROOT, 'public', blurWebpRel)
 
     if (isStale(fullJpg, src) && !resizeJpeg(src, fullJpg, FULL_MAX)) return
-    if (isStale(thumbJpg, src) && !resizeJpeg(src, thumbJpg, THUMB_MAX)) return
+    if (
+      isStale(thumbJpg, src) &&
+      !resizeJpeg(src, thumbJpg, THUMB_MAX, THUMB_JPEG_QUALITY)
+    ) {
+      return
+    }
     if (!fs.existsSync(fullJpg) || !fs.existsSync(thumbJpg)) return
 
-    if (isStale(fullWebp, fullJpg)) toWebp(fullJpg, fullWebp)
-    if (isStale(thumbWebp, thumbJpg)) toWebp(thumbJpg, thumbWebp)
+    if (isStale(fullWebp, fullJpg)) toWebp(fullJpg, fullWebp, WEBP_QUALITY)
+    if (isStale(thumbWebp, thumbJpg)) {
+      toWebp(thumbJpg, thumbWebp, THUMB_WEBP_QUALITY)
+    }
+    if (isStale(blurWebp, thumbJpg)) makeBlur(thumbJpg, blurWebp)
 
     images.push({
       full: fullJpgRel,

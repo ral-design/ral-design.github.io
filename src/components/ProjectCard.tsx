@@ -123,7 +123,7 @@ export function ProjectCard({
             sizes={
               size === 'wide'
                 ? '(max-width: 720px) 100vw, (max-width: 1100px) 66vw, 40vw'
-                : '(max-width: 720px) 50vw, (max-width: 1100px) 33vw, 20vw'
+                : '(max-width: 720px) 100vw, (max-width: 1100px) 33vw, 20vw'
             }
           />
         ) : (

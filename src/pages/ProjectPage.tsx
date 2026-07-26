@@ -152,9 +152,11 @@ export function ProjectPage() {
                 <LazyImage
                   src={img.full}
                   webp={img.fullWebp}
+                  thumb={img.thumb}
+                  thumbWebp={img.thumbWebp}
                   alt={`${title} — ${i + 1}`}
                   priority={i === 0}
-                  sizes="(max-width: 920px) 100vw, 920px"
+                  sizes="(max-width: 920px) 100vw, 960px"
                 />
               </button>
             ))}
