@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 interface Options {
   rootMargin?: string
@@ -10,11 +10,18 @@ export function useInView<T extends HTMLElement>({
   rootMargin = '300px 0px',
   once = true,
 }: Options = {}) {
-  const ref = useRef<T | null>(null)
   const [inView, setInView] = useState(false)
+  const observerRef = useRef<IntersectionObserver | null>(null)
+  const nodeRef = useRef<T | null>(null)
+  const optionsRef = useRef({ rootMargin, once })
+  optionsRef.current = { rootMargin, once }
 
-  useEffect(() => {
-    const node = ref.current
+  const ref = useCallback((node: T | null) => {
+    if (observerRef.current) {
+      observerRef.current.disconnect()
+      observerRef.current = null
+    }
+    nodeRef.current = node
     if (!node || inView) return
 
     if (typeof IntersectionObserver === 'undefined') {
@@ -22,18 +29,18 @@ export function useInView<T extends HTMLElement>({
       return
     }
 
+    const { rootMargin: margin, once: observeOnce } = optionsRef.current
     const io = new IntersectionObserver(
       ([entry]) => {
         if (!entry?.isIntersecting) return
         setInView(true)
-        if (once) io.disconnect()
+        if (observeOnce) io.disconnect()
       },
-      { rootMargin },
+      { rootMargin: margin, threshold: 0 },
     )
-
+    observerRef.current = io
     io.observe(node)
-    return () => io.disconnect()
-  }, [inView, once, rootMargin])
+  }, [inView])
 
   return { ref, inView }
 }

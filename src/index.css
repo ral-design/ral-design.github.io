@@ -60,6 +60,7 @@ video {
   position: relative;
   width: 100%;
   height: 100%;
+  min-height: 160px;
   overflow: hidden;
   background: #ececec;
 }
@@ -72,6 +73,13 @@ video {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Reserves space before the real image mounts (absolute blur alone has no layout size). */
+.lazy-image__sizer {
+  width: 100%;
+  min-height: inherit;
+  pointer-events: none;
 }
 
 .lazy-image__blur,
@@ -886,8 +894,7 @@ video {
   margin: 0;
   overflow: hidden;
   background: #f4f4f4;
-  content-visibility: auto;
-  contain-intrinsic-size: 600px;
+  min-height: 280px;
   border-radius: 4px;
 }
 
@@ -919,8 +926,13 @@ video {
 }
 
 .project-gallery__item .lazy-image,
+.project-gallery__item .lazy-video {
+  min-height: 280px;
+  height: auto;
+  background: #111;
+}
+
 .project-gallery__item .lazy-image img,
-.project-gallery__item .lazy-video,
 .project-gallery__item .lazy-video video,
 .project-gallery__item .lazy-video img {
   height: auto;

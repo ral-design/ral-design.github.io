@@ -155,7 +155,7 @@ export function ProjectPage() {
                   thumb={img.thumb}
                   thumbWebp={img.thumbWebp}
                   alt={`${title} — ${i + 1}`}
-                  priority={i === 0}
+                  priority={i < 2}
                   sizes="(max-width: 920px) 100vw, 960px"
                 />
               </button>

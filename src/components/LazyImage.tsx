@@ -57,6 +57,8 @@ export function LazyImage({
       ref={ref}
       className={`lazy-image ${loaded ? 'is-loaded' : ''} ${className}`}
     >
+      {/* In-flow sizer until the real image gives height (absolute blur alone is 0×0). */}
+      {!loaded ? <div className="lazy-image__sizer" aria-hidden /> : null}
       {blurUrl && blurOk ? (
         <img
           className="lazy-image__blur"
@@ -79,9 +81,13 @@ export function LazyImage({
             alt={alt}
             loading={priority ? 'eager' : 'lazy'}
             decoding={priority ? 'sync' : 'async'}
-            fetchPriority={priority ? 'high' : 'low'}
+            fetchPriority={priority ? 'high' : 'auto'}
             sizes={sizes}
             onLoad={() => setLoaded(true)}
+            ref={(el) => {
+              // Cached images can be complete before onLoad is attached.
+              if (el?.complete && el.naturalWidth > 0) setLoaded(true)
+            }}
           />
         </picture>
       ) : null}
