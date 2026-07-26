@@ -4,10 +4,13 @@ import { AboutPage } from './pages/AboutPage'
 import { HomePage } from './pages/HomePage'
 import { ProjectPage } from './pages/ProjectPage'
 
+/** Empty string for site root (`base: '/'`); never pass bare `"/"`. */
+const basename = import.meta.env.BASE_URL.replace(/\/$/, '')
+
 export default function App() {
   return (
     <AppProvider>
-      <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '') || '/'}>
+      <BrowserRouter basename={basename || undefined}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
